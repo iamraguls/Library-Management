@@ -24,6 +24,20 @@ public class IssueRecord {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    public IssueRecord() {
+
+    }
+
+    public IssueRecord(Long id, LocalDate issueDate, LocalDate dueDate, LocalDate returnDate, Boolean isReturned, User user, Book book) {
+        this.id = id;
+        this.issueDate = issueDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.isReturned = isReturned;
+        this.user = user;
+        this.book = book;
+    }
+
     public Long getId() {
         return id;
     }

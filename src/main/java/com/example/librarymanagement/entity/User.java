@@ -18,6 +18,18 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
 
+    public User() {
+
+    }
+
+    public User(Long id, String name, String email, String password, Set<String> roles) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }

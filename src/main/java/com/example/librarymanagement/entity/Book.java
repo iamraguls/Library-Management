@@ -15,6 +15,18 @@ public class Book {
     private Integer quantity;
     private Boolean isAvailable;
 
+    public Book() {
+    }
+
+    public Book(Long id, String title, String author, String isbn, Integer quantity, Boolean isAvailable) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.quantity = quantity;
+        this.isAvailable = isAvailable;
+    }
+
     public Long getId() {
         return id;
     }

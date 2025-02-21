@@ -19,7 +19,7 @@ public class BookService {
     }
 
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not  found"));
+        return bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not found"));
     }
 
     public Book addBook(BookDto bookDto) {
@@ -33,7 +33,7 @@ public class BookService {
     }
 
     public Book updateBook(Long id, BookDto bookDto) {
-        Book oldBook = bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not  found"));
+        Book oldBook = bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not found"));
         oldBook.setAuthor(bookDto.getAuthor());
         oldBook.setTitle(bookDto.getTitle());
         oldBook.setIsbn(bookDto.getIsbn());
