@@ -3,6 +3,7 @@ package com.example.librarymanagement.jwt;
 import com.example.librarymanagement.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,20 +34,31 @@ public class JwtService {
     }
 
     public Claims extractAllClaims(String jwtToken){
-        return Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(jwtToken).getPayload();
+        Claims claims = Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(jwtToken).getPayload();
+        System.out.println("Extracted Claims: " + claims);
+        return claims;
     }
+
+
 
     public SecretKey getSignInKey(){
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
-        return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis() + jwtExpiration)).signWith(getSignInKey()).compact();
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) // Ensure this is used!
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
+
 
     public boolean isTokenValid(String jwtToken, User userDetails) {
         final String username = extractUsername(jwtToken);
@@ -54,8 +66,14 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String jwtToken){
-        return extractExpiration(jwtToken).before(new Date());
+        Date expiration = extractExpiration(jwtToken);
+        if (expiration == null) {
+            System.out.println("JWT Expiration is null! Treating token as expired.");
+            return true; // Treat as expired if expiration is null
+        }
+        return expiration.before(new Date());
     }
+
 
     private Date extractExpiration(String jwtToken){
         return extractClaim(jwtToken, Claims::getExpiration);
