@@ -11,7 +11,7 @@ public class LoginResponseDto {
 
     private String token;
     private String username;
-    private Set<Role> roles;
+    private Set<String> roles;
 
     public String getToken() {
         return token;
@@ -29,11 +29,11 @@ public class LoginResponseDto {
         this.username = username;
     }
 
-    public Set<Role> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }

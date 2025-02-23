@@ -1,10 +1,14 @@
 package com.example.librarymanagement.service;
 
+import com.example.librarymanagement.dto.LoginRequestDto;
+import com.example.librarymanagement.dto.LoginResponseDto;
 import com.example.librarymanagement.dto.RegisterRequestDto;
 import com.example.librarymanagement.entity.User;
+import com.example.librarymanagement.jwt.JwtService;
 import com.example.librarymanagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,9 @@ public class AuthenticationService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
 
 
     public User userRegister(RegisterRequestDto registerRequestDto) {
@@ -53,6 +60,15 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
 
         return userRepository.save(user);
+    }
+
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),loginRequestDto.getPassword()));
+        User user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(()-> new RuntimeException("User not registered"));
+
+        String token = jwtService.generateToken(user);
+        return LoginResponseDto.builder().token(token).username(user.getUsername()).roles(user.getRoles()).build();
+
     }
 }
 
