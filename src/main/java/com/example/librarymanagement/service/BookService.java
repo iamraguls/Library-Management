@@ -26,9 +26,9 @@ public class BookService {
         Book book = new Book();
         book.setAuthor(bookDto.getAuthor());
         book.setTitle(bookDto.getTitle());
-        book.setAvailable(bookDto.getAvailable());
+        book.setQuantity(bookDto.getQuantity());
+        book.setAvailable(bookDto.getQuantity() > 0);
         book.setIsbn(bookDto.getIsbn());
-        book.setAvailable(bookDto.getAvailable());
         return bookRepository.save(book);
     }
 
@@ -37,8 +37,8 @@ public class BookService {
         oldBook.setAuthor(bookDto.getAuthor());
         oldBook.setTitle(bookDto.getTitle());
         oldBook.setIsbn(bookDto.getIsbn());
-        oldBook.setAvailable(bookDto.getAvailable());
-        oldBook.setAvailable(bookDto.getAvailable());
+        oldBook.setAvailable(bookDto.getQuantity() > 0);
+        oldBook.setQuantity(bookDto.getQuantity());
         return bookRepository.save(oldBook);
     }
 

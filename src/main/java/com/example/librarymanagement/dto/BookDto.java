@@ -7,7 +7,6 @@ public class BookDto {
     private String author;
     private String isbn;
     private Integer quantity;
-    private Boolean isAvailable;
 
     public String getTitle() {
         return title;
@@ -41,11 +40,4 @@ public class BookDto {
         this.quantity = quantity;
     }
 
-    public Boolean getAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(Boolean available) {
-        isAvailable = available;
-    }
 }
