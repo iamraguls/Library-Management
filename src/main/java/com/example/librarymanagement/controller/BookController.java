@@ -26,19 +26,19 @@ public class BookController {
     }
 
     @PostMapping("/book")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')") // ✅ Use this
     public Book addBook(@RequestBody BookDto bookDto){
         return bookService.addBook(bookDto);
     }
 
     @PutMapping("/book/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')") // ✅ Use this
     public Book updateBook(@PathVariable Long id, @RequestBody BookDto bookDto){
         return bookService.updateBook(id,bookDto);
     }
 
     @DeleteMapping("/book/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')") // ✅ Use this
     public void deleteBook(@PathVariable Long id){
         bookService.deleteBook(id);
     }
